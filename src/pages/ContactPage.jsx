@@ -1,5 +1,5 @@
 import { motion } from 'framer-motion'
-import { useEffect } from 'react'
+import { useState, useEffect } from 'react'
 
 const fadeUp = {
   hidden: { opacity: 0, y: 40 },
@@ -9,10 +9,38 @@ const fadeUp = {
   }),
 }
 
+// Replace with your actual Google Form URL before deploying
+const GOOGLE_FORM_URL = null
+
 const ContactPage = () => {
+  const [formData, setFormData] = useState({
+    name: '',
+    email: '',
+    phone: '',
+    subject: '',
+    message: '',
+  })
+  const [submitted, setSubmitted] = useState(false)
+
   useEffect(() => {
     window.scrollTo(0, 0)
   }, [])
+
+  const handleSubmit = (e) => {
+    e.preventDefault()
+    if (GOOGLE_FORM_URL) {
+      window.open(GOOGLE_FORM_URL, '_blank')
+      setSubmitted(true)
+      setTimeout(() => setSubmitted(false), 5000)
+    } else {
+      setSubmitted(true)
+      setTimeout(() => setSubmitted(false), 5000)
+    }
+  }
+
+  const handleChange = (e) => {
+    setFormData({ ...formData, [e.target.name]: e.target.value })
+  }
 
   return (
     <div style={styles.page}>
@@ -37,7 +65,7 @@ const ContactPage = () => {
       </section>
 
       <div style={styles.contentGrid}>
-        {/* Contact Form (Google Form Embed) */}
+        {/* Contact Form */}
         <motion.div
           initial="hidden"
           animate="visible"
@@ -51,39 +79,112 @@ const ContactPage = () => {
               Fill out the form below and we'll get back to you within 24 hours
             </p>
 
-            <div style={styles.formEmbed}>
-              <iframe
-                src="https://docs.google.com/forms/d/e/1FAIpQLSdMvKLY6Q_wZuGQZN8OGeCkn6jAh-JOxBz5z5z5z5z5z5z5z5/viewform?embedded=true"
-                width="100%"
-                height="800"
-                frameBorder="0"
-                marginHeight="0"
-                marginWidth="0"
-                style={{
-                  borderRadius: '12px',
-                  background: 'transparent',
-                  minHeight: '600px',
-                }}
-                title="Contact Form"
-              >
-                Loading...
-              </iframe>
-            </div>
+            {submitted ? (
+              <div style={styles.successMessage}>
+                <span style={{ fontSize: '3rem' }}>{GOOGLE_FORM_URL ? '🎉' : '📋'}</span>
+                <h3 style={{ fontFamily: "'Playfair Display', serif", marginTop: '1rem' }}>
+                  {GOOGLE_FORM_URL ? 'Google Form Opened!' : 'Thank You!'}
+                </h3>
+                <p style={{ opacity: 0.7, marginTop: '0.5rem' }}>
+                  {GOOGLE_FORM_URL
+                    ? 'A Google Form has been opened in a new tab. Please complete and submit it there.'
+                    : 'Please reach out to us directly via phone, email, or WhatsApp using the contact details on this page.'}
+                </p>
+              </div>
+            ) : (
+              <form onSubmit={handleSubmit} style={styles.form}>
+                <div style={styles.formRow}>
+                  <div style={styles.formGroup}>
+                    <label style={styles.label}>Full Name</label>
+                    <input
+                      type="text"
+                      name="name"
+                      value={formData.name}
+                      onChange={handleChange}
+                      placeholder="Your name"
+                      style={styles.input}
+                      required
+                    />
+                  </div>
+                  <div style={styles.formGroup}>
+                    <label style={styles.label}>Email</label>
+                    <input
+                      type="email"
+                      name="email"
+                      value={formData.email}
+                      onChange={handleChange}
+                      placeholder="you@example.com"
+                      style={styles.input}
+                      required
+                    />
+                  </div>
+                </div>
 
-            <div style={styles.altContact}>
-              <p style={styles.altText}>
-                Or you can also reach us directly at:
-              </p>
-              <a
-                href="https://docs.google.com/forms/d/e/1FAIpQLSdMvKLY6Q_wZuGQZN8OGeCkn6jAh-JOxBz5z5z5z5z5z5z5z5/viewform"
-                target="_blank"
-                rel="noopener noreferrer"
-                className="btn-primary"
-                style={{ marginTop: '1rem', display: 'inline-flex' }}
-              >
-                Open Form in New Tab <span>↗</span>
-              </a>
-            </div>
+                <div style={styles.formRow}>
+                  <div style={styles.formGroup}>
+                    <label style={styles.label}>Phone</label>
+                    <input
+                      type="tel"
+                      name="phone"
+                      value={formData.phone}
+                      onChange={handleChange}
+                      placeholder="+91 98765 43210"
+                      style={styles.input}
+                    />
+                  </div>
+                  <div style={styles.formGroup}>
+                    <label style={styles.label}>Subject</label>
+                    <select
+                      name="subject"
+                      value={formData.subject}
+                      onChange={handleChange}
+                      style={styles.input}
+                      required
+                    >
+                      <option value="">Select a subject</option>
+                      <option value="order">Place an Order</option>
+                      <option value="subscription">Subscription Plans</option>
+                      <option value="catering">Bulk/Catering Order</option>
+                      <option value="partnership">Partnership</option>
+                      <option value="feedback">Feedback</option>
+                      <option value="other">Other</option>
+                    </select>
+                  </div>
+                </div>
+
+                <div style={styles.formGroup}>
+                  <label style={styles.label}>Message</label>
+                  <textarea
+                    name="message"
+                    value={formData.message}
+                    onChange={handleChange}
+                    placeholder="Tell us what you need..."
+                    rows={5}
+                    style={{ ...styles.input, resize: 'vertical', minHeight: '120px' }}
+                    required
+                  />
+                </div>
+
+                <button type="submit" className="btn-primary" style={styles.submitBtn}>
+                  Send Message <span>→</span>
+                </button>
+
+                {GOOGLE_FORM_URL && (
+                  <p style={styles.formNote}>
+                    Or fill out our{' '}
+                    <a
+                      href={GOOGLE_FORM_URL}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      style={styles.formLink}
+                    >
+                      Google Form
+                    </a>
+                    {' '}for a detailed inquiry.
+                  </p>
+                )}
+              </form>
+            )}
           </div>
         </motion.div>
 
@@ -95,7 +196,6 @@ const ContactPage = () => {
           custom={3}
           style={styles.infoSection}
         >
-          {/* Quick Contact Cards */}
           {[
             {
               icon: '📍',
@@ -251,7 +351,7 @@ const styles = {
   },
   formSection: {},
   formCard: {
-    height: '100%',
+    height: 'auto',
   },
   formTitle: {
     fontFamily: "'Playfair Display', serif",
@@ -264,21 +364,59 @@ const styles = {
     opacity: 0.6,
     marginBottom: '1.5rem',
   },
-  formEmbed: {
-    borderRadius: '12px',
-    overflow: 'hidden',
-    marginBottom: '1.5rem',
-    minHeight: '600px',
-    background: 'rgba(255,255,255,0.02)',
+  form: {
+    display: 'flex',
+    flexDirection: 'column',
+    gap: '1.25rem',
   },
-  altContact: {
+  formRow: {
+    display: 'grid',
+    gridTemplateColumns: '1fr 1fr',
+    gap: '1rem',
+  },
+  formGroup: {
+    display: 'flex',
+    flexDirection: 'column',
+    gap: '0.5rem',
+  },
+  label: {
+    fontSize: '0.85rem',
+    fontWeight: 500,
+    opacity: 0.8,
+  },
+  input: {
+    width: '100%',
+    padding: '12px 16px',
+    background: 'rgba(255,255,255,0.05)',
+    border: '1px solid rgba(255,255,255,0.15)',
+    borderRadius: '10px',
+    color: '#FAFAF5',
+    fontSize: '0.95rem',
+    outline: 'none',
+    fontFamily: "'Inter', sans-serif",
+    transition: 'border-color 0.3s',
+    boxSizing: 'border-box',
+  },
+  submitBtn: {
+    width: '100%',
+    justifyContent: 'center',
+    padding: '16px',
+    fontSize: '1rem',
+    marginTop: '0.5rem',
+  },
+  formNote: {
     textAlign: 'center',
-    paddingTop: '1rem',
-    borderTop: '1px solid rgba(255,255,255,0.1)',
+    fontSize: '0.85rem',
+    opacity: 0.5,
+    marginTop: '0.5rem',
   },
-  altText: {
-    fontSize: '0.9rem',
-    opacity: 0.6,
+  formLink: {
+    color: '#FF6B35',
+    textDecoration: 'underline',
+  },
+  successMessage: {
+    textAlign: 'center',
+    padding: '3rem 1rem',
   },
   infoSection: {
     display: 'flex',
