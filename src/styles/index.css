@@ -178,3 +178,9 @@ button {
   position: relative;
   z-index: 1;
 }
+
+@media (max-width: 768px) {
+  .glass-card {
+    padding: 1.5rem;
+  }
+}
