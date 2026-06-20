@@ -1,0 +1,170 @@
+.juzi-nav {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  z-index: 1000;
+  padding: 1rem 0;
+  transition: all 0.3s ease;
+}
+
+.juzi-nav--scrolled {
+  background: rgba(26, 26, 46, 0.95);
+  backdrop-filter: blur(20px);
+  border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.juzi-nav__container {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 0 2rem;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.juzi-nav__logo {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  text-decoration: none;
+}
+
+.juzi-nav__logo-icon {
+  font-size: 1.8rem;
+}
+
+.juzi-nav__logo-text {
+  font-family: 'Playfair Display', serif;
+  font-size: 1.8rem;
+  font-weight: 800;
+  background: linear-gradient(135deg, #FF6B35, #FFD166);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+
+.juzi-nav__links {
+  display: flex;
+  align-items: center;
+  gap: 2rem;
+}
+
+.juzi-nav__link {
+  text-decoration: none;
+  font-size: 0.95rem;
+  font-weight: 500;
+  color: #FAFAF5;
+  transition: color 0.3s ease;
+  position: relative;
+  padding: 0.5rem 0;
+}
+
+.juzi-nav__link--active {
+  color: #FF6B35;
+}
+
+.juzi-nav__link-indicator {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  height: 2px;
+  background: #FF6B35;
+  border-radius: 1px;
+}
+
+.juzi-nav__order-btn {
+  background: linear-gradient(135deg, #FF6B35, #ff8f65);
+  color: white;
+  padding: 10px 24px;
+  border-radius: 50px;
+  font-weight: 600;
+  font-size: 0.9rem;
+  text-decoration: none;
+  transition: all 0.3s ease;
+  display: inline-block;
+}
+
+.juzi-nav__order-btn:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 5px 20px rgba(255, 107, 53, 0.4);
+}
+
+.juzi-nav__order-btn--mobile {
+  width: 100%;
+  text-align: center;
+}
+
+.juzi-nav__hamburger {
+  display: none;
+  flex-direction: column;
+  gap: 5px;
+  background: transparent;
+  border: none;
+  cursor: pointer;
+  padding: 5px;
+}
+
+.juzi-nav__hamburger-line {
+  width: 25px;
+  height: 2px;
+  background: #FAFAF5;
+  transition: all 0.3s ease;
+  display: block;
+}
+
+.juzi-nav__hamburger-line--open-1 {
+  transform: rotate(45deg) translateY(10px);
+}
+
+.juzi-nav__hamburger-line--open-2 {
+  opacity: 0;
+}
+
+.juzi-nav__hamburger-line--open-3 {
+  transform: rotate(-45deg) translateY(-10px);
+}
+
+.juzi-nav__mobile-menu {
+  position: fixed;
+  top: 70px;
+  left: 0;
+  right: 0;
+  background: rgba(26, 26, 46, 0.98);
+  backdrop-filter: blur(20px);
+  padding: 2rem;
+  z-index: 999;
+  display: flex;
+  flex-direction: column;
+  gap: 1.5rem;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.juzi-nav__mobile-link {
+  text-decoration: none;
+  font-size: 1.2rem;
+  font-weight: 500;
+  color: #FAFAF5;
+  padding: 0.5rem 0;
+}
+
+.juzi-nav__mobile-link--active {
+  color: #FF6B35;
+}
+
+@media (max-width: 768px) {
+  .juzi-nav__links {
+    display: none;
+  }
+
+  .juzi-nav__hamburger {
+    display: flex;
+  }
+}
+
+@media (min-width: 769px) {
+  .juzi-nav__mobile-menu {
+    display: none !important;
+  }
+}
