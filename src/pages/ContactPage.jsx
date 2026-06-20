@@ -9,7 +9,8 @@ const fadeUp = {
   }),
 }
 
-const GOOGLE_FORM_URL = 'https://docs.google.com/forms/d/e/YOUR_FORM_ID/viewform'
+// Replace with your actual Google Form URL before deploying
+const GOOGLE_FORM_URL = null
 
 const ContactPage = () => {
   const [formData, setFormData] = useState({
@@ -27,9 +28,14 @@ const ContactPage = () => {
 
   const handleSubmit = (e) => {
     e.preventDefault()
-    window.open(GOOGLE_FORM_URL, '_blank')
-    setSubmitted(true)
-    setTimeout(() => setSubmitted(false), 3000)
+    if (GOOGLE_FORM_URL) {
+      window.open(GOOGLE_FORM_URL, '_blank')
+      setSubmitted(true)
+      setTimeout(() => setSubmitted(false), 5000)
+    } else {
+      setSubmitted(true)
+      setTimeout(() => setSubmitted(false), 5000)
+    }
   }
 
   const handleChange = (e) => {
@@ -75,12 +81,14 @@ const ContactPage = () => {
 
             {submitted ? (
               <div style={styles.successMessage}>
-                <span style={{ fontSize: '3rem' }}>🎉</span>
+                <span style={{ fontSize: '3rem' }}>{GOOGLE_FORM_URL ? '🎉' : '📋'}</span>
                 <h3 style={{ fontFamily: "'Playfair Display', serif", marginTop: '1rem' }}>
-                  Thank You!
+                  {GOOGLE_FORM_URL ? 'Google Form Opened!' : 'Thank You!'}
                 </h3>
                 <p style={{ opacity: 0.7, marginTop: '0.5rem' }}>
-                  Your message has been sent. We'll get back to you soon!
+                  {GOOGLE_FORM_URL
+                    ? 'A Google Form has been opened in a new tab. Please complete and submit it there.'
+                    : 'Please reach out to us directly via phone, email, or WhatsApp using the contact details on this page.'}
                 </p>
               </div>
             ) : (
@@ -161,18 +169,20 @@ const ContactPage = () => {
                   Send Message <span>→</span>
                 </button>
 
-                <p style={styles.formNote}>
-                  Or fill out our{' '}
-                  <a
-                    href={GOOGLE_FORM_URL}
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    style={styles.formLink}
-                  >
-                    Google Form
-                  </a>
-                  {' '}for a detailed inquiry.
-                </p>
+                {GOOGLE_FORM_URL && (
+                  <p style={styles.formNote}>
+                    Or fill out our{' '}
+                    <a
+                      href={GOOGLE_FORM_URL}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      style={styles.formLink}
+                    >
+                      Google Form
+                    </a>
+                    {' '}for a detailed inquiry.
+                  </p>
+                )}
               </form>
             )}
           </div>
